@@ -1,0 +1,127 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.f" xmlns:table="sap.ui.table" xmlns:core="sap.ui.core"
+	xmlns:variants="sap.ui.comp.variants" xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar" xmlns:unified="sap.ui.unified"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<smartTable:SmartTable id="idSmartTablePrItemList" entitySet="PrListSet" tableType="ResponsiveTable" useExportToExcel="true"
+		smartFilterId="smartFilterBar" enableAutoBinding="true" editable="false" showTablePersonalisation="true"
+		app:p13nDialogSettings="{group:{visible:false},filter:{visible:false},sort:{visible:true}}" useVariantManagement="true"
+		useTablePersonalisation="true" header="{i18n>Label.PrListTitle}" showRowCount="true" beforeExport="onBeforeExport"
+		persistencyKey="zlpuba002_1.Smarttable" demandPopin="true" class="sapUiResponsiveContentPadding" busyIndicatorDelay="0"
+		beforeRebindTable="onbeforeRebindTable" dataReceived="onDataRecieved" showFullScreenButton="true"
+		ignoredFields="" initiallyVisibleFields="">
+		<smartTable:customToolbar>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>Button.ManagePo}" type="Default" press="handleManagePo"/>
+			</OverflowToolbar>
+		</smartTable:customToolbar>
+		<smartTable:customData>
+			<core:CustomData key="dateFormatSettings" value='\{"UTC":true,"pattern":"dd.MM.yyyy"\}'/>
+		</smartTable:customData>
+		<Table id="idTablePrItemList" mode="None" itemPress="onPrListPress" growingThreshold="10000" growing="true" growingScrollToLoad="true" >
+			<columns>
+				<Column hAlign="Center" vAlign="Top" mergeDuplicates="false" width="80px">
+					<customData>
+						<core:CustomData key="p13nData"
+							value='\{"columnKey":"CHK_ALL","columnIndex":"0","leadingProperty":["CHK_BOX","CHK_HIDE"],"sortProperty":""}'/>
+					</customData>
+					<Text text=""/>
+				</Column>
+				<Column hAlign="Left" vAlign="Top" mergeDuplicates="false" width="150px">
+					<customData>
+						<core:CustomData key="p13nData"
+							value='\{"columnKey":"BANFN","columnIndex":"1","leadingProperty":["BANFN","BNFPO"],"sortProperty":"BANFN"}'/>
+					</customData>
+					<Text text="{i18n>Label.PrNo}"/>
+				</Column>
+				<Column hAlign="Left" vAlign="Top" mergeDuplicates="false">
+					<customData>
+						<core:CustomData key="p13nData" 
+							value='\{"columnKey":"MATNR","columnIndex":"2","leadingProperty":["MATNR","TXZ01"],"sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.Material} / {i18n>Label.ShortText}"/>
+				</Column>
+				<Column hAlign="Left" vAlign="Top" mergeDuplicates="false" width="150px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"MATKL","columnIndex":"3","leadingProperty":["MATKL","WGBEZ"],"sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.MaterialGroup}"/>
+				</Column>
+				<Column hAlign="Left" vAlign="Top" mergeDuplicates="false" width="150px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"EKGRP","columnIndex":"4","leadingProperty":["EKGRP","EKGRP_NAME"],"sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.PurchasingGroup}"/>
+				</Column>
+				<Column hAlign="Right" vAlign="Top" mergeDuplicates="false" width="130px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"QTY","columnIndex":"5","leadingProperty":["QTY","ALL_QTY","UNIT_NAME"],"sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.Quantity}"/>
+				</Column>
+				<Column hAlign="Right" vAlign="Top" mergeDuplicates="false" width="130px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"UNIT_PRICE","columnIndex":"6","leadingProperty":["UNIT_PRICE","WAERS","RLWRT"],"sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.UnitPrice}"/>
+				</Column>
+				<Column hAlign="Center" vAlign="Top" mergeDuplicates="false" width="100px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"BADAT","columnIndex":"7","leadingProperty":["BADAT","ZZMMEGP_PROJ","ZZMMEGP_ITEM","BSART","ZZMMEGP_YEAR"],"sortProperty":"BADAT"}'/>
+					</customData>
+					<Text text="{i18n>Label.DocumentDate}"/>
+				</Column>
+				<Column hAlign="Right" vAlign="Top" mergeDuplicates="false" width="130px" visible="false">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"RLWRT","columnIndex":"8","leadingProperty":["RLWRT","WAERS"],"sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.TotalValue}"/>
+				</Column>
+				<Column hAlign="Center" vAlign="Top" mergeDuplicates="false" width="100px" visible="false">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"LFDAT","columnIndex":"9","leadingProperty":"LFDAT","sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.DeliveryDate}"/>
+				</Column>
+				<Column hAlign="Left" vAlign="Top" mergeDuplicates="false" width="150px" visible="false">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"WERKS","columnIndex":"10","leadingProperty":["WERKS","WERKS_NAME"],"sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.Plant}"/>
+				</Column>
+				<Column hAlign="Left" vAlign="Top" mergeDuplicates="false" width="100px" visible="false">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"ERNAM","columnIndex":"11","leadingProperty":"ERNAM","sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.CreateBy}"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem type="Inactive" >
+					<cells>
+						<HBox>
+							<CheckBox selected="{CHK_BOX}" visible="true" select="handleClickEachPr"/>
+							<CheckBox selected="{CHK_ALL}" visible="{CHK_HIDE}" select="handleClickAllPr"/>
+						</HBox>
+						<Text text="{BANFN} / {path:'BNFPO', formatter:'.formatter.parseInt'}"/>
+						<ObjectIdentifier title="{MATNR}" text="{TXZ01}" titleActive="false" visible="true"/>
+						<ObjectIdentifier title="{MATKL}" text="{WGBEZ}" titleActive="false" visible="true"/>
+						<ObjectIdentifier title="{EKGRP}" text="{EKGRP_NAME}" titleActive="false" visible="true"/>
+						<ObjectNumber emphasized="false" number="{ path: 'QTY', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }"
+								unit="{UNIT_NAME}"/>
+						<ObjectNumber emphasized="false" number="{ path: 'UNIT_PRICE', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }"
+							unit="{WAERS}"/>
+						<Text text="{path: 'BADAT', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy', UTC: false, style: 'short' } }"
+										maxLines="2"/>
+						<ObjectNumber emphasized="false"
+							number="{ path: 'RLWRT', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" unit="{WAERS}"/>
+						<Text text="{path: 'LFDAT', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy', UTC: false, style: 'short' } }"
+							maxLines="2"/>
+						<ObjectIdentifier title="{WERKS}" text="{WERKS_NAME}" titleActive="false" visible="true"/>
+						<Text text="{ERNAM}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</smartTable:SmartTable>
+</core:FragmentDefinition>

@@ -1,0 +1,7 @@
+.myWidth .sapMITBHorizontalWrapper {
+    max-width: 10rem;
+}
+
+.myWidth .sapMITBHorizontal.sapMITBFilter>.sapMITBHorizontalWrapper>.sapMITBText {
+    max-width: 10rem;
+}
