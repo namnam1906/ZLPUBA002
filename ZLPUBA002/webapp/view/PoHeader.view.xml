@@ -1,0 +1,26 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" controllerName="com.cu.s4hana.zlpuba002.controller.PoHeader" xmlns:uxap="sap.uxap" xmlns="sap.m"
+	xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form">
+	<Page
+		id="idPoHeaderPage"
+		title="{i18n>Label.PoNoTitle}"
+		showHeader="true" 
+		showNavButton="true">
+		<customHeader>
+			<Bar>
+				<contentLeft>
+					<Button type="Back" press="handleBackPress" />
+				</contentLeft>
+				<contentMiddle>
+					<Title text="{i18n>Label.PoNoTitle}"/>
+				</contentMiddle>
+				<contentRight>
+					<Button id="idButtonEdit" text="{i18n>Button.Edit}" type="Emphasized" press="handleEditPress" enabled="{= ${userParam>/EDIT_FLAG} }"
+						visible="{= ${poHeader>/STATUS} !== 'APP' &amp;&amp; ${poHeader>/STATUS} !== 'REJ' &amp;&amp; ${controlModel>/mode} === 'DISPLAY'}"/>
+					<Button id="idButtonPrint" text="{i18n>Button.Print}" type="Default" press="handlePrintPoPress" 
+						visible="true" />
+				</contentRight>
+			</Bar>
+		</customHeader>
+		<footer/>
+	</Page>
+</mvc:View>

@@ -1,0 +1,183 @@
+{
+	"_version": "1.8.0",
+	"sap.app": {
+		"_version": "1.3.0",
+		"id": "com.cu.s4hana.zlpuba002",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.2.2"
+		},
+		"dataSources": {
+			"local": {
+				"uri": "/here/goes/your/serviceUrl/local/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0"
+				}
+			},
+			"zlpuba002_srv": {
+				"uri": "/sap/opu/odata/sap/zlpuba002_srv/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": ""
+				}
+			},
+			"zlpuba002_srv_test": {
+				"uri": "/CU_S4HANA_1809/sap/opu/odata/sap/zlpuba002_srv/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": ""
+				}
+			}
+		},
+		"title": "{{Label.AppTitle}}",
+		"description": "{{Label.AppTitle}}",
+		"ach": "ach",
+		"resources": "resources.json",
+		"sourceTemplate": {
+			"id": "ui5template.basicSAPUI5ApplicationProject",
+			"version": "1.32.0",
+			"toolsId": "16ca5c2d-5de7-419c-9b25-43a24d5d1f03"
+		}
+	},
+	"sap.ui": {
+		"_version": "1.3.0",
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"_version": "1.3.0",
+		"rootView": {
+			"viewName": "com.cu.s4hana.zlpuba002.view.PoList",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.50.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.ui.layout": {},
+				"iam.bc.utilities": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"uri": "i18n/i18n.properties"
+			},
+			"": {
+				"dataSource": "zlpuba002_srv",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"loadMetadataAsync": false,
+					"json": true,
+					"bJSON": true,
+					"defaultBindingMode": "TwoWay",
+					"defaultCountMode": "Inline",
+					"useBatch": true,
+					"refreshAfterChange": false,
+					"disableHeadRequestForToken": true
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "com.cu.s4hana.zlpuba002.view",
+				"controlId": "zlpuba002",
+				"clearTarget": false,
+				"controlAggregation": "pages",
+				"bypassed": {
+					"target": [
+						"PoList"
+					]
+				}
+			},
+			"targets": {
+				"PoList": {
+					"controlAggregation": "pages",
+					"viewName": "PoList",
+					"viewId": "",
+					"viewLevel": 1,
+					"transition": "slide"
+				},
+				"PoHeader": {
+					"controlAggregation": "pages",
+					"viewName": "PoHeader",
+					"viewId": "",
+					"viewLevel": 1,
+					"transition": "show"
+				},
+				"PoItem": {
+					"controlAggregation": "pages",
+					"viewName": "PoItem",
+					"viewId": "",
+					"viewLevel": 1,
+					"transition": "show"
+				}
+			},
+			"routes": [
+				{
+					"pattern": "PoList/:context:",
+					"name": "PoList",
+					"target": [
+						"PoList"
+					]
+				},
+				{
+					"pattern": "",
+					"name": "default",
+					"target": [
+						"PoList"
+					]
+				},
+				{
+					"pattern": "PoHeader/{po}",
+					"name": "PoHeader",
+					"target": [
+						"PoHeader"
+					]
+				},
+				{
+					"pattern": "PoItem/:po:/:poItem:",
+					"name": "PoItem",
+					"target": [
+						"PoItem"
+					]
+				}
+			]
+		},
+		"flexBundle": false
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zlpuba002",
+		"_version": "1.1.0"
+	}
+}

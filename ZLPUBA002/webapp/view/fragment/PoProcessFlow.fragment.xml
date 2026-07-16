@@ -1,0 +1,30 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" 
+	xmlns:form="sap.ui.layout.form" xmlns:commons="sap.suite.ui.commons" xmlns:suite="sap.suite.ui.commons">
+	<suite:Timeline
+			axisOrientation="Vertical"
+			enableDoubleSided="false"
+			groupBy="HireDate"
+			growingThreshold="0"
+			sortOldestFirst="false"
+			showHeaderBar="false"
+			showItemFilter="false"
+			showSearch="false"
+			showSort="false"
+			showTimeFilter="false"
+			sort="false"
+			enableScroll="false"
+			noDataText="{i18n>Message.NoDataFound}"
+			content="{mProcessLog>/}">
+		<!--<content>-->
+			<suite:TimelineItem
+					dateTime="{mProcessLog>HireDate}"
+					title="{mProcessLog>JobTitle}"
+					userNameClickable="false"
+					text="{mProcessLog>Comment}"
+					userName="{mProcessLog>Name}"
+					icon="{mProcessLog>Icon}"
+					status="{mProcessLog>Status}">
+			</suite:TimelineItem>
+		<!--</content>-->
+	</suite:Timeline>
+</core:FragmentDefinition>

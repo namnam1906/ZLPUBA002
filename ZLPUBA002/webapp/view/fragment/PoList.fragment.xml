@@ -1,0 +1,101 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.f" xmlns:table="sap.ui.table" xmlns:core="sap.ui.core"
+	xmlns:variants="sap.ui.comp.variants" xmlns:form="sap.ui.layout.form" xmlns:fb="sap.ui.comp.filterbar" xmlns:unified="sap.ui.unified"
+	xmlns:smartTable="sap.ui.comp.smarttable" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<smartTable:SmartTable id="idSmartTablePoList" entitySet="PoHeaderSet" tableType="ResponsiveTable" useExportToExcel="true"
+		smartFilterId="smartFilterBar" enableAutoBinding="true" editable="false" showTablePersonalisation="true"
+		app:p13nDialogSettings="{group:{visible:true},filter:{visible:false},sort:{visible:true}}" useVariantManagement="true"
+		useTablePersonalisation="true" header="{i18n>Label.PoListTitle}" showRowCount="true" beforeExport="onBeforeExport"
+		persistencyKey="zlpuba002.Smarttable" demandPopin="true" class="sapUiResponsiveContentPadding" busyIndicatorDelay="0"
+		beforeRebindTable="onbeforeRebindTable" showFullScreenButton="true"
+		ignoredFields="" initiallyVisibleFields="">
+		<smartTable:customToolbar>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>Button.CreateRefPr}" type="Default" enabled="{= ${userParam>/CREATE_FLAG}}" press="handleCreateRefPr"/>
+				<Button text="{i18n>Button.CreateRefOa}" type="Default" enabled="{= ${userParam>/CREATE_FLAG}}" press="handleCreateRefOa"/>
+			</OverflowToolbar>
+		</smartTable:customToolbar>
+		<smartTable:customData>
+			<core:CustomData key="dateFormatSettings" value='\{"UTC":true,"pattern":"dd.MM.yyyy"\}'/>
+		</smartTable:customData>
+		<Table id="idTablePoList" mode="None" itemPress="onPoListPress" growingThreshold="10000" growing="true" growingScrollToLoad="true" >
+			<columns>
+				<Column hAlign="Left" vAlign="Top" mergeDuplicates="false" width="120px">
+					<customData>
+						<core:CustomData key="p13nData"
+							value='\{"columnKey":"EBELN","columnIndex":"0","leadingProperty":"EBELN","sortProperty":"EBELN"}'/>
+					</customData>
+					<Text text="{i18n>Label.PoNo}"/>
+				</Column>
+				<Column hAlign="Left" vAlign="Top" mergeDuplicates="false" width="150px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"BSART","columnIndex":"1","leadingProperty":["BSART","BSART_NAME"],"sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.DocType}"/>
+				</Column>
+				<Column hAlign="Left" vAlign="Top" mergeDuplicates="false">
+					<customData>
+						<core:CustomData key="p13nData" 
+							value='\{"columnKey":"TXZ01","columnIndex":"2","leadingProperty":"TXZ01","sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.ShortTextFirstItem}"/>
+				</Column>
+				<Column hAlign="Left" vAlign="Top" mergeDuplicates="false" width="150px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"EKGRP","columnIndex":"3","leadingProperty":["EKGRP","EKGRP_NAME"],"sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.PurchasingGroup}"/>
+				</Column>
+				<Column hAlign="Right" vAlign="Top" mergeDuplicates="false" width="140px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"RLWRT","columnIndex":"4","leadingProperty":["RLWRT","WAERS"],"sortProperty":"RLWRT"}'/>
+					</customData>
+					<Text text="{i18n>Label.TotalValue}"/>
+				</Column>
+				<!--<Column hAlign="Left" vAlign="Top" mergeDuplicates="false" width="120px">-->
+				<!--	<customData>-->
+				<!--		<core:CustomData key="p13nData" value='\{"columnKey":"ERNAM_NAME","columnIndex":"5","leadingProperty":"ERNAM_NAME","sortProperty":""}'/>-->
+				<!--	</customData>-->
+				<!--	<Text text="{i18n>Label.CreateBy}"/>-->
+				<!--</Column>-->
+				<Column hAlign="Center" vAlign="Top" mergeDuplicates="false" width="100px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"BEDAT","columnIndex":"6","leadingProperty":"BEDAT","sortProperty":"BEDAT"}'/>
+					</customData>
+					<Text text="{i18n>Label.DocumentDate}"/>
+				</Column>
+				<Column hAlign="Center" vAlign="Top" mergeDuplicates="false" width="120px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"STATUS_NAME","columnIndex":"7","leadingProperty":["STATUS_NAME","STATUS"],"sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Label.Status}"/>
+				</Column>
+				<Column hAlign="Center" vAlign="Top" mergeDuplicates="false" width="60px">
+					<customData>
+						<core:CustomData key="p13nData" value='\{"columnKey":"ACTION","columnIndex":"8","leadingProperty":"ACTION","sortProperty":""}'/>
+					</customData>
+					<Text text="{i18n>Button.Print}"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem type="Active" >
+					<cells>
+						<Text text="{EBELN}"/>
+						<ObjectIdentifier title="{BSART}" text="{BSART_NAME}" titleActive="false" visible="true"/>
+						<Text text="{TXZ01}"/>
+						<ObjectIdentifier title="{EKGRP}" text="{EKGRP_NAME}" titleActive="false" visible="true"/>
+						<ObjectNumber emphasized="true" number="{ path: 'RLWRT', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }"
+							unit="{WAERS}"/>	
+						<!--<Text text="{ERNAM_NAME}"/>-->
+						<Text text="{path: 'BEDAT', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy', UTC: false, style: 'short' } }"
+							maxLines="2"/>
+						<!--<ObjectStatus text="{ path : 'STATUS' , formatter : '.formatter.parseStatusText' }" state="{ path : 'STATUS' , formatter : '.formatter.parseStatus' }"/>-->
+						<ObjectStatus text="{STATUS_NAME}" state="{ path : 'STATUS' , formatter : '.formatter.parseStatus' }"/>
+						<Button text="{i18n>Button.Print}" type="Default" press="handlePrintPo"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</smartTable:SmartTable>
+</core:FragmentDefinition>

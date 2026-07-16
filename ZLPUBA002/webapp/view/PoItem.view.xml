@@ -1,0 +1,33 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" controllerName="com.cu.s4hana.zlpuba002.controller.PoItem" xmlns:uxap="sap.uxap" xmlns="sap.m"
+	xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" >
+	<Page
+		id="idPoItemPage"
+		title="{i18n>Label.PoListTitle}"
+		showHeader="true" 
+		showNavButton="true">
+		<customHeader>
+			<Bar>
+				<contentLeft>
+					<Button type="Back" press="handleBackPress" />
+				</contentLeft>
+				<contentMiddle>
+					<Title text="{i18n>Label.PoListTitle}"/>
+				</contentMiddle>
+				<contentRight>
+					<Button id="idGoToPreviousItem" icon="sap-icon://media-reverse" iconFirst="true" type="Default" press="handleGoToPreviousItem"/>
+					<Select id="idSelectItem"
+						forceSelection="false"
+						change="handleItemChange"
+						items="{
+							path: 'poItem>/',
+							sorter: { path: 'EBELP' }
+						}">
+						<core:Item key="{poItem>EBELP}" text="[{path:'poItem>EBELP', formatter:'.formatter.parseInt'}] {poItem>TXZ01}" />
+					</Select>
+					<Button id="idGoToNextItem" icon="sap-icon://media-play" iconFirst="false" type="Default" press="handleGoToNextItem"/>
+				</contentRight>
+			</Bar>
+		</customHeader>
+		<footer/>
+	</Page>
+</mvc:View>

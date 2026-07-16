@@ -1,0 +1,1033 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:commons="sap.suite.ui.commons" xmlns:u="sap.ui.unified">
+	<uxap:ObjectPageLayout showTitleInHeaderContent="false" showHeaderContent="true" showEditHeaderButton="false" showFooter="true"
+		class="sapUiSizeCompact">
+		<uxap:headerTitle>
+			<uxap:ObjectPageHeader objectTitle="{poItemDetail>/EBELN} / {poItemDetail>/EBELP}" objectSubtitle="{poItemDetail>/TXZ01}"
+				isObjectIconAlwaysVisible="false" isObjectTitleAlwaysVisible="true" isObjectSubtitleAlwaysVisible="true" showPlaceholder="false"></uxap:ObjectPageHeader>
+		</uxap:headerTitle>
+		<uxap:headerContent/>
+		<uxap:sections>
+			<uxap:ObjectPageSection title="{i18n>Label.GeneralData}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.GeneralData}">
+						<uxap:blocks>
+							<layout:Grid defaultSpan="XL12 L12 M12 S12">
+								<layout:content>
+									<form:Form>
+										<form:layout>
+											<form:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+												emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="2" singleContainerFullSize="false"/>
+										</form:layout>
+										<form:formContainers>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.AccountAssignment} / {i18n>Label.ItemCategory}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Select selectedKey="{poItemDetail>/KNTTP}" forceSelection="false"
+																change="handleChangeAccountAssignment" 
+																enabled="{= ${poItemDetail>/LOEKZ} === '' }">
+																<items>
+																	<core:Item key="-" text="{i18n>Label.AccountAssignment.None2}" enabled="true"/>
+																	<core:Item key="A" text="{i18n>Label.AccountAssignment.Asset2}" enabled="true"/>
+																	<core:Item key="K" text="{i18n>Label.AccountAssignment.CostCenter2}" enabled="true"/>
+																	<core:Item key="U" text="{i18n>Label.AccountAssignment.Unknown2}" enabled="true"/>
+																</items>
+																<layoutData>
+																	<layout:GridData span="XL6 L6 M6 S12"/>
+																</layoutData>
+															</Select>
+															<Select selectedKey="{poItemDetail>/PSTYP}" forceSelection="false" 
+																change="handleChangeItemCategory" enabled="{= ${poItemDetail>/LOEKZ} === '' }">
+																<items>
+																	<core:Item key="0" text="{i18n>Label.PoItemCategory.None}" enabled="true"/>
+																	<core:Item key="D" text="{i18n>Label.PoItemCategory.Service}" enabled="true"/>
+																</items>
+																<layoutData>
+																	<layout:GridData span="XL6 L6 M6 S12"/>
+																</layoutData>
+															</Select>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.Material}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input id="idMaterial" value="{poItemDetail>/MATNR}" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHMaterial"
+																change="onChangeMaterial" editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoItem/MATNR/@maxLength', formatter:'.formatter.parseInt'}"
+																showSuggestion="true" maxSuggestionWidth="30%"
+																showTableSuggestionValueHelp="false"
+																suggestionRows="{f4Material>/}"
+																suggestionItemSelected="selectedSuggestMaterial">
+																<suggestionColumns>
+																	<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
+																		<Label text="{i18n>Label.Material}"/>
+																	</Column>
+																	<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+																		<Label text="{i18n>Label.MaterialName}"/>
+																	</Column>
+																</suggestionColumns>
+																<suggestionRows>
+																	<ColumnListItem>
+																	<cells>
+																		<Label text="{f4Material>MATNR}"/>
+																		<Text text="{f4Material>MAKTX}"/>
+																	</cells>
+																	</ColumnListItem>
+																</suggestionRows>
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL12 L12 M12 S12"/>-->
+																<!--</layoutData>-->
+															</Input>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.ShortText}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idItemShortText" value="{poItemDetail>/TXZ01}" 
+																change="onChangeItemShortText" editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																maxLength="{path:'/#PoItem/TXZ01/@maxLength', formatter:'.formatter.parseInt'}"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.MaterialGroup}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idMaterialGroup" value="{poItemDetail>/MATKL}" change="onChangeMaterialGroup" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHMaterialGroup" editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoItem/MATKL/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poItemDetail>/MATKL_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.Plant}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idPlant" value="{poItemDetail>/WERKS}" change="onChangePlant" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHPlant" editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoItem/WERKS/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poItemDetail>/WERKS_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.StorageLocation}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input id="idSloc" value="{poItemDetail>/LGORT}" change="onChangeSloc" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHSloc"
+																editable="{= ${poItemDetail>/LOEKZ} === '' &amp;&amp; ${poItemDetail>/WERKS} !== ''}"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoItem/LGORT/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poItemDetail>/LGORT_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.VendorMaterial}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Text text="{= ${poItemDetail>/IDNLF} !== '' ? ${poItemDetail>/IDNLF} : '-' }"/>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.EgpNo}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Text text="{= ${poItemDetail>/ZZMMEGP_PROJ} !== '' ? ${parts:['poItemDetail>/ZZMMEGP_PROJ','poItemDetail>/ZZMMEGP_YEAR'], formatter:'.formatter.parseEgp'} : '-' }"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement visible="true">
+														<form:label>
+															<Label text="{i18n>Label.EgpItem}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Text text="{= ${poItemDetail>/ZZMMEGP_ITEM} !== '' ? ${poItemDetail>/ZZMMEGP_ITEM} : '-' }" />
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement visible="{= ${poItemDetail>/PURCH_DOC} !== ''}">
+														<form:label>
+															<Label text="{i18n>Label.RefDoc}" required="false"/>
+														</form:label>
+														<form:fields>
+															<VBox>
+															</VBox>	
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+										</form:formContainers>
+									</form:Form>
+								</layout:content>
+							</layout:Grid>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="{i18n>Label.LimitService}" visible="{= ${poItemDetail>/PSTYP} === 'D' || ${poItemDetail>/PSTYP} === '9'}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.LimitService}">
+						<uxap:blocks>
+							<layout:Grid defaultSpan="XL12 L12 M12 S12">
+								<layout:content>
+									<form:Form>
+										<form:layout>
+											<form:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+												emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="2" singleContainerFullSize="false"/>
+										</form:layout>
+										<form:formContainers>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.SumLimit}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idSumLimit" value="{ path: 'poItemDetail>/SUMLIMIT', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2} }" 
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																textAlign="Right" change="onChangeSumLimit">
+																<layoutData>
+																	<layout:GridData span="XL7 L7 M7 S12"/>
+																</layoutData>
+															</Input>
+															<Text text="{poItemDetail>/WAERS}" class="sapUiTinyMarginTop">
+																<layoutData>
+																	<layout:GridData span="XL5 L5 M5 S12"/>
+																</layoutData>
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.ExpectLimit}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idExpectLimit" value="{ path: 'poItemDetail>/COMMITMENT', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2} }" 
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																textAlign="Right" change="onChangeExpectLimit">
+																<layoutData>
+																	<layout:GridData span="XL7 L7 M7 S12"/>
+																</layoutData>
+															</Input>
+															<Text text="{poItemDetail>/WAERS}" class="sapUiTinyMarginTop">
+																<layoutData>
+																	<layout:GridData span="XL5 L5 M5 S12"/>
+																</layoutData>
+															</Text>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.NoLimit}" required="false"/>
+														</form:label>
+														<form:fields>
+															<CheckBox text="" select="onChangeNolimit"
+																selected="{poItemDetail>/NOLIMIT}" editable="{= ${poItemDetail>/LOEKZ} === '' }"/>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+										</form:formContainers>
+									</form:Form>
+								</layout:content>
+							</layout:Grid>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="{i18n>Label.PurchasingData}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.PurchasingData}">
+						<uxap:blocks>
+							<layout:Grid defaultSpan="XL12 L12 M12 S12">
+								<layout:content>
+									<form:Form>
+										<form:layout>
+											<form:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+												emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="2" singleContainerFullSize="false"/>
+										</form:layout>
+										<form:formContainers>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.Quantity}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idQuantity" value="{ path: 'poItemDetail>/MENGE', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2} }" 
+																textAlign="Right" change="onChangeQty" editable="{= ${poItemDetail>/LOEKZ} === '' &amp;&amp; ${poItemDetail>/PSTYP} !== 'D' }">
+																<layoutData>
+																	<layout:GridData span="XL7 L7 M7 S12"/>
+																</layoutData>
+															</Input>
+															<Input value="{poItemDetail>/MEINS_NAME}" valueHelpOnly="false" textAlign="Center" change="onChangeUnit"
+																valueHelpRequest="onVHUnit" showValueHelp="true" editable="{= ${poItemDetail>/LOEKZ} === '' &amp;&amp; ${poItemDetail>/MATNR} === '' &amp;&amp; ${poItemDetail>/PSTYP} !== 'D' }">
+																<layoutData>
+																	<layout:GridData span="XL5 L5 M5 S12"/>
+																</layoutData>
+															</Input>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement visible="{= ${poItemDetail>/KNTTP} === '' || ${poItemDetail>/KNTTP} === '-'}">
+														<form:label>
+															<Label text="{i18n>Label.ValType}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input id="idValType" value="{poItemDetail>/BWTAR}" change="onChangeValType" type="Text" textAlign="Left"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																showValueHelp="true" valueHelpRequest="onVHValType"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoItem/BWTAR/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL7 L7 M7 S12"/>
+																</layoutData>
+															</Input>
+															<Text text="{poItemDetail>/BWTAR_NAME}" class="sapUiTinyMarginTop">
+																<layoutData>
+																	<layout:GridData span="XL5 L5 M5 S12"/>
+																</layoutData>
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.Tax}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input id="idTax" value="{poItemDetail>/MWSKZ}" change="onChangeTax" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHTax" editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoItem/MWSKZ/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL7 L7 M7 S12"/>
+																</layoutData>
+															</Input>
+															<Text text="{poItemDetail>/MWSKZ_NAME}" class="sapUiTinyMarginTop">
+																<layoutData>
+																	<layout:GridData span="XL5 L5 M5 S12"/>
+																</layoutData>
+															</Text>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.UnitPrice}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idUnitPrice" value="{ path: 'poItemDetail>/NETPR', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2} }" 
+																textAlign="Right" change="onChangeUnitPrice" editable="{= ${poItemDetail>/LOEKZ} === '' &amp;&amp; ${poItemDetail>/PSTYP} !== 'D' }">
+																<layoutData>
+																	<layout:GridData span="XL8 L8 M8 S12"/>
+																</layoutData>
+															</Input>
+															<Input value="{poItemDetail>/WAERS}" valueHelpOnly="true" textAlign="Center" 
+																valueHelpRequest="onVHCurrency" showValueHelp="true" editable="{= ${poItemDetail>/LOEKZ} === '' &amp;&amp; ${poItemDetail>/PSTYP} !== 'D' }">
+																<layoutData>
+																	<layout:GridData span="XL4 L4 M4 S12"/>
+																</layoutData>
+															</Input>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.PriceUnit}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idPriceUnit" value="{ path: 'poItemDetail>/PEINH', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2} }" 
+																textAlign="Right" change="onChangePriceUnit" editable="{= ${poItemDetail>/LOEKZ} === '' &amp;&amp; ${poItemDetail>/PSTYP} !== 'D' }">
+																<layoutData>
+																	<layout:GridData span="XL8 L8 M8 S12"/>
+																</layoutData>
+															</Input>
+															<Text text="{poItemDetail>/MEINS_NAME}" class="sapUiTinyMarginTop">
+																<layoutData>
+																	<layout:GridData span="XL4 L4 M4 S12"/>
+																</layoutData>
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.TotalValue}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input value="{ path: 'poItemDetail>/RLWRT', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2} }" 
+																textAlign="Right" change="onChangeTotalValue" editable="false" >
+																<layoutData>
+																	<layout:GridData span="XL8 L8 M8 S12"/>
+																</layoutData>
+															</Input>
+															<Text text="{poItemDetail>/WAERS}" width="30px" class="sapUiTinyMarginTop">
+																<layoutData>
+																	<layout:GridData span="XL4 L4 M4 S12"/>
+																</layoutData>
+															</Text>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.DeliveryDate}" required="true"/>
+														</form:label>
+														<form:fields>
+															<DatePicker id="idDeliveryDate" dateValue="{poItemDetail>/EINDT}" editable="{= ${poItemDetail>/LOEKZ} === '' }" 
+																textAlign="Center" width="auto" placeholder="{i18n>Label.DateFormat}"
+																displayFormat="dd.MM.yyyy" valueFormat="dd.MM.yyyy" displayFormatType="Gregorian" visible="true" change="onChangeDeliveryDate">
+																<layoutData>
+																	<layout:GridData span="XL6 L6 M6 S6"/>
+																</layoutData>
+															</DatePicker>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.FiscalYearFm}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input value="{poItemDetail>/ZZFM_YEAR}" editable="false">
+																<layoutData>
+																	<layout:GridData span="XL6 L6 M6 S6"/>
+																</layoutData>
+															</Input>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="" required="false"/>
+														</form:label>
+														<form:fields>
+															<CheckBox text="{i18n>Label.Zva2Item}" selected="{poItemDetail>/ZVA2}" editable="{= ${poItemDetail>/LOEKZ} === '' &amp;&amp; ${poHeader>/ZVA2} !== true }"/>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+										</form:formContainers>
+									</form:Form>
+								</layout:content>
+							</layout:Grid>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="{i18n>Label.AccountAssignment}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.AccountAssignment} ({poItemDetail>/KNTTP_NAME})" 
+						visible="{= ${poItemDetail>/KNTTP} === '' ||  ${poItemDetail>/KNTTP} === '-' ||  ${poItemDetail>/KNTTP} === undefined}">
+						<uxap:blocks>
+							<layout:Grid defaultSpan="XL12 L12 M12 S12">
+								<layout:content>
+									<form:Form>
+										<form:layout>
+											<form:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+												emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2" singleContainerFullSize="false"/>
+										</form:layout>
+										<form:formContainers>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.Fund}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input id="idFund" value="{poItemDetail>/GEBER}" change="onChangeFund" type="Text" textAlign="Left"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																showValueHelp="true" valueHelpRequest="onVHFund" app:KNTTP="-"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoItem/GEBER/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poItemDetail>/GEBER_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.FunctionalArea}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idFunctionalArea" value="{poItemDetail>/FKBER}" change="onChangeFunctionalArea" type="Text" textAlign="Left"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																showValueHelp="true" valueHelpRequest="onVHFunctionalArea" app:KNTTP="-"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoItem/FKBER/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poItemDetail>/FKBER_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.FundCenter}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idFundCenter" value="{poItemDetail>/FISTL}" change="onChangeFundCenter" type="Text" textAlign="Left"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																showValueHelp="true" valueHelpRequest="onVHFundCenter" app:KNTTP="-"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoItem/FISTL/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poItemDetail>/FISTL_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.CommitmentItem}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input id="idCommitmentItem" value="{poItemDetail>/FIPOS}" change="onChangeCommitment" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHCommitment" app:KNTTP="-"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoItem/FIPOS/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poItemDetail>/FIPOS_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.EarmarkedFunds}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input value="{poItemDetail>/KBLNR}" change="onChangeEarmarkedFunds" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHEarmarkedFunds" app:KNTTP="-"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																maxLength="{path:'/#PoItem/KBLNR/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL6 L6 M6 S6"/>
+																</layoutData>
+															</Input>
+															<Input value="{poItemDetail>/KBLPOS}" change="onChangeEarmarkedFunds" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHEarmarkedFunds" app:KNTTP="-"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																maxLength="{path:'/#PoItem/KBLPOS/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL3 L3 M3 S3"/>
+																</layoutData>
+															</Input>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+										</form:formContainers>
+									</form:Form>
+								</layout:content>
+							</layout:Grid>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+					<uxap:ObjectPageSubSection title="{i18n>Label.AccountAssignment} ({poItemDetail>/KNTTP_NAME})" visible="{= ${poItemDetail>/KNTTP} === 'K'}">
+						<uxap:blocks>
+							<layout:Grid defaultSpan="XL12 L12 M12 S12">
+								<layout:content>
+									<form:Form>
+										<form:layout>
+											<form:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+												emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2" singleContainerFullSize="false"/>
+										</form:layout>
+										<form:formContainers>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.GlAccount}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idGlAccountK" value="{poAccountAssignment>/0/SAKTO}" change="onChangeGl" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHGl" app:KNTTP="K"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/SAKTO/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poAccountAssignment>/0/SAKTO_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.BusinessArea}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idBusinessAreaK" value="{poAccountAssignment>/0/GSBER}" change="onChangeBusinessArea" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHBusinessArea" app:KNTTP="K"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/GSBER/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poAccountAssignment>/0/GSBER_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.ControllingArea}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input id="idControllingAreaK" value="1000" change="onChangeControllingArea" type="Text" textAlign="Left"
+																editable="false"
+																showValueHelp="true" valueHelpRequest="onVHControllingArea" app:KNTTP="K"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/KOKRS/@maxLength', formatter:'.formatter.parseInt'}">
+															</Input>
+															<Text text="เขตการควบคุมจุฬาฯ" class="sapUiTinyMarginTop">
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.CostCenter}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idCostCenterK" value="{poAccountAssignment>/0/KOSTL}" change="onChangeCostCenter" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHCostCenter" app:KNTTP="K"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/KOSTL/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poAccountAssignment>/0/KOSTL_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.Order}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input value="{poAccountAssignment>/0/AUFNR}" change="onChangeOrder" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHOrder" app:KNTTP="K"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/AUFNR/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poAccountAssignment>/0/AUFNR_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.Fund}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idFundK" value="{poAccountAssignment>/0/GEBER}" change="onChangeFund" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHFund" app:KNTTP="K"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/GEBER/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poAccountAssignment>/0/GEBER_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<!--<Label text="เขตหน้าที่" required="true"/>-->
+															<Label text="{i18n>Label.FunctionalArea}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idFunctionalAreaK" value="{poAccountAssignment>/0/FKBER}" change="onChangeFunctionalArea" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHFunctionalArea" app:KNTTP="K"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/FKBER/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poAccountAssignment>/0/FKBER_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.FundCenter}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input id="idFundCenterK" value="{poAccountAssignment>/0/FISTL}" change="onChangeFundCenter" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHFundCenter" app:KNTTP="K"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/FISTL/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poAccountAssignment>/0/FISTL_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.CommitmentItem}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input id="idCommitmentItemK" value="{poAccountAssignment>/0/FIPOS}" change="onChangeCommitment" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHCommitment" app:KNTTP="K"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/FIPOS/@maxLength', formatter:'.formatter.parseInt'}">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Input>
+															<Text text="{poAccountAssignment>/0/FIPOS_NAME}" class="sapUiTinyMarginTop">
+																<!--<layoutData>-->
+																<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+																<!--</layoutData>-->
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.EarmarkedFunds}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input value="{poAccountAssignment>/0/KBLNR}" change="onChangeEarmarkedFunds" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHEarmarkedFunds" app:KNTTP="K"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/KBLNR/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL6 L6 M6 S6"/>
+																</layoutData>
+															</Input>
+															<Input value="{poAccountAssignment>/0/KBLPOS}" change="onChangeEarmarkedFunds" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHEarmarkedFunds" app:KNTTP="K"
+																editable="{= ${poItemDetail>/LOEKZ} === '' }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoAccAssignment/KBLPOS/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL3 L3 M3 S3"/>
+																</layoutData>
+															</Input>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+										</form:formContainers>
+									</form:Form>
+								</layout:content>
+							</layout:Grid>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+					<uxap:ObjectPageSubSection title="{i18n>Label.AccountAssignment} ({poItemDetail>/KNTTP_NAME})" visible="{= ${poItemDetail>/KNTTP} === 'A'}">
+						<uxap:blocks>
+							<Table width="100%" growing="true" growingScrollToLoad="true" growingThreshold="50" mode="MultiSelect" items="{poAccountAssignment>/}">
+								<headerToolbar>
+									<OverflowToolbar design="Transparent">
+										<content>
+											<ToolbarSpacer/>
+											<!--<Button text="{i18n>Button.CreateNewAsset}" type="Emphasized" press="handleCreateNewAsset">-->
+											<!--	<layoutData>-->
+											<!--		<OverflowToolbarLayoutData moveToOverflow="true"/>-->
+											<!--	</layoutData>-->
+											<!--</Button>-->
+											<Button text="{i18n>Button.AddItem}" type="Accept" press="handleAddAsset"> 
+												<layoutData>
+													<OverflowToolbarLayoutData moveToOverflow="true"/>
+												</layoutData>
+											</Button>
+											<Button text="{i18n>Button.DeleteItem}" type="Reject" press="handleDeleteAsset">
+												<layoutData>
+													<OverflowToolbarLayoutData moveToOverflow="true"/>
+												</layoutData>
+											</Button>
+										</content>
+									</OverflowToolbar>
+								</headerToolbar>
+								<columns>
+									<Column width="40px" hAlign="Center" vAlign="Middle" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+										<header>
+											<Text text="{i18n>Label.No}"/>
+										</header>
+									</Column>
+									<Column width="auto" hAlign="Left" vAlign="Middle" demandPopin="false">
+										<header>
+											<Text text="{i18n>Label.AccountAssignment.Asset2}"/>
+										</header>
+									</Column>
+									<Column width="50px" hAlign="Left" vAlign="Middle" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+										<header>
+											<Text text="{i18n>Label.SubAsset}"/>
+										</header>
+									</Column>
+									<Column width="60px" hAlign="Right" vAlign="Middle" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+										<header>
+											<!--<VBox>-->
+												<Text text="{i18n>Label.Qty}"/>
+												<!--<Text text="{prItemDetail>/MEINS_NAME}"/>-->
+											<!--</VBox>-->
+										</header>
+									</Column>
+									<Column width="100px" hAlign="Left" vAlign="Top" popinDisplay="Inline" demandPopin="false" minScreenWidth="Desktop">
+										<header>
+											<Text text="{i18n>Label.GlAccount}"/>
+										</header>
+									</Column>
+									<Column width="50px" hAlign="Center" vAlign="Top" popinDisplay="Inline" demandPopin="false" minScreenWidth="Desktop">
+										<header>
+											<Text text="{i18n>Label.BusA}"/>
+										</header>
+									</Column>
+									<Column width="100px" hAlign="Left" vAlign="Top" popinDisplay="Inline" demandPopin="false" minScreenWidth="Desktop">
+										<header>
+											<Text text="{i18n>Label.CommitmentItem}"/>
+										</header>
+									</Column>
+									<Column width="100px" hAlign="Left" vAlign="Top" popinDisplay="Inline" demandPopin="false" minScreenWidth="Desktop">
+										<header>
+											<Text text="{i18n>Label.Order}"/>
+										</header>
+									</Column>
+									<Column width="105px" hAlign="Left" vAlign="Top" popinDisplay="Inline" demandPopin="false" minScreenWidth="Desktop">
+										<header>
+											<Text text="{i18n>Label.FundCenter}"/>
+										</header>
+									</Column>
+									<Column width="100px" hAlign="Left" vAlign="Top" popinDisplay="Inline" demandPopin="false" minScreenWidth="Desktop">
+										<header>
+											<Text text="{i18n>Label.Fund}"/>
+										</header>
+									</Column>
+									<Column width="110px" hAlign="Left" vAlign="Top" popinDisplay="Inline" demandPopin="false" minScreenWidth="Desktop">
+										<header>
+											<Text text="{i18n>Label.FunctionalArea}"/>
+										</header>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem type="Inactive">
+										<cells>
+											<Text text="{poAccountAssignment>ZEKKN}"/>
+											<Input value="{poAccountAssignment>ANLN1}" change="onChangeAsset" type="Text" textAlign="Left"
+												showValueHelp="true" valueHelpRequest="onVHAsset" app:KNTTP="A"
+												editable="{= ${poItemDetail>/LOEKZ} === '' }"
+												enabled="true" visible="true" width="auto" valueHelpOnly="false"
+												maxLength="{path:'/#PoAccAssignment/ANLN1/@maxLength', formatter:'.formatter.parseInt'}">
+												<!--<layoutData>-->
+												<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+												<!--</layoutData>-->
+											</Input>
+											<Input value="{poAccountAssignment>ANLN2}" change="onChangeAsset" type="Text" textAlign="Left"
+												showValueHelp="true" valueHelpRequest="onVHAsset" app:KNTTP="A"
+												editable="{= ${poItemDetail>/LOEKZ} === '' }"
+												enabled="true" visible="true" width="auto" valueHelpOnly="false"
+												maxLength="{path:'/#PoAccAssignment/ANLN2/@maxLength', formatter:'.formatter.parseInt'}">
+												<!--<layoutData>-->
+												<!--	<layout:GridData span="XL6 L6 M6 S6"/>-->
+												<!--</layoutData>-->
+											</Input>
+											
+											<Input value="{ path: 'poAccountAssignment>MENGE', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2} }" 
+												textAlign="Right" editable="{= ${poItemDetail>/LOEKZ} === '' }">
+												<layoutData>
+													<layout:GridData span="XL8 L8 M8 S12"/>
+												</layoutData>
+											</Input>
+											
+											<VBox direction="Column" justifyContent="Start" displayInline="false">
+												<items>
+													<Text text="{poAccountAssignment>SAKTO}" maxLines="1" wrapping="false" textAlign="Begin"/>
+													<Text text="{poAccountAssignment>SAKTO_NAME}" maxLines="2" wrapping="true" textAlign="Begin"/>
+												</items>
+											</VBox>
+											<Text text="{poAccountAssignment>GSBER}"/>
+											<VBox direction="Column" justifyContent="Start" displayInline="false">
+												<items>
+													<Text text="{poAccountAssignment>FIPOS}" maxLines="1" wrapping="false" textAlign="Begin"/>
+													<Text text="{poAccountAssignment>FIPOS_NAME}" maxLines="2" wrapping="true" textAlign="Begin"/>
+												</items>
+											</VBox>
+											<VBox direction="Column" justifyContent="Start" displayInline="false">
+												<items>
+													<Text text="{poAccountAssignment>AUFNR}" maxLines="1" wrapping="false" textAlign="Begin"/>
+													<Text text="{poAccountAssignment>AUFNR_NAME}" maxLines="2" wrapping="true" textAlign="Begin"/>
+												</items>
+											</VBox>
+											<VBox direction="Column" justifyContent="Start" displayInline="false">
+												<items>
+													<Text text="{poAccountAssignment>FISTL}" maxLines="1" wrapping="false" textAlign="Begin"/>
+													<Text text="{poAccountAssignment>FISTL_NAME}" maxLines="2" wrapping="true" textAlign="Begin"/>
+												</items>
+											</VBox>
+											<VBox direction="Column" justifyContent="Start" displayInline="false">
+												<items>
+													<Text text="{poAccountAssignment>GEBER}" maxLines="1" wrapping="false" textAlign="Begin"/>
+													<Text text="{poAccountAssignment>GEBER_NAME}" maxLines="2" wrapping="true" textAlign="Begin"/>
+												</items>
+											</VBox>
+											<VBox direction="Column" justifyContent="Start" displayInline="false">
+												<items>
+													<Text text="{poAccountAssignment>FKBER}" maxLines="1" wrapping="false" textAlign="Begin"/>
+													<Text text="{poAccountAssignment>FKBER_NAME}" maxLines="2" wrapping="true" textAlign="Begin"/>
+												</items>
+											</VBox>
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="{i18n>Label.LongText}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.LongText}">
+						<uxap:blocks>
+							<IconTabBar headerMode="Inline" upperCase="false" expandable="false" expanded="true" backgroundDesign="Transparent"
+								items="{poItemText>/}" applyContentPadding="true" showOverflowSelectList="true" class="sapUiResponsiveContentPadding myWidth">
+								<items>
+									<IconTabFilter icon="sap-icon://notes" design="Horizontal"
+										iconColor="{= ${poItemText>DETAIL} !== '' ? 'Positive' : 'Neutral'}" 
+										text="{poItemText>TITLE}" tooltip="{poItemText>TITLE}"
+										key="{poItemText>TDID}" >
+										<!--<TextArea rows="5" cols="200" maxLength="0" wrapping="Soft" enabled="true" visible="true"/>-->
+										<TextArea rows="5" cols="200" value="{poItemText>DETAIL}"
+											liveChange="onTextBoxLiveChange" editable="{= ${poItemDetail>/LOEKZ} === ''}" />
+									</IconTabFilter>
+								</items>
+							</IconTabBar>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+		</uxap:sections>
+		<uxap:footer>
+			<OverflowToolbar design="Auto" visible="true">
+				<content>
+					<Button id="messagePopoverBtn" icon="sap-icon://message-popup" type="Emphasized"
+						text="{=${message>/}.length}"
+						visible="{=!!${message>/}.length}"
+						press="handleMessagePopoverPress"/>
+					<ToolbarSpacer/>
+					<Button text="{i18n>Button.Next}" type="Accept" press="handleBackPress"/>
+				</content>
+			</OverflowToolbar>
+		</uxap:footer>
+	</uxap:ObjectPageLayout>
+</core:FragmentDefinition>

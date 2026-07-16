@@ -1,0 +1,18 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" controllerName="com.cu.s4hana.zlpuba002.controller.PoList" xmlns:f="sap.f"
+	xmlns:variants="sap.ui.comp.variants" xmlns="sap.m" xmlns:filterbar="sap.ui.comp.filterbar" xmlns:core="sap.ui.core">
+	<f:DynamicPage headerExpanded="true" showFooter="true" class="sapUiSizeCompact">
+		<f:title/>
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<core:Fragment fragmentName="com.cu.s4hana.zlpuba002.view.fragment.FilterSection" type="XML"/>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<core:Fragment fragmentName="com.cu.s4hana.zlpuba002.view.fragment.PoList" type="XML"/>
+		</f:content>
+		<f:footer>
+		</f:footer>
+	</f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,560 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap"
+	xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:commons="sap.suite.ui.commons" xmlns:f="sap.f">
+	<uxap:ObjectPageLayout showTitleInHeaderContent="false" showHeaderContent="true" showEditHeaderButton="false" showFooter="true"
+		class="sapUiSizeCompact" toggleHeaderOnTitleClick="false">
+		<uxap:headerTitle>
+			<uxap:ObjectPageDynamicHeaderTitle>
+				<uxap:expandedHeading>
+					<FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+						<Title text="{poHeader>/EBELN}" wrapping="true" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+						<Text text="{poHeader>/BSART_NAME}"/>
+					</FlexBox>
+				</uxap:expandedHeading>
+				<uxap:snappedHeading>
+					<FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
+						<Title text="{poHeader>/EBELN}" wrapping="true" class="sapUiTinyMarginTop sapUiTinyMarginEnd"/>
+						<Text text="{poHeader>/BSART_NAME}"/>
+					</FlexBox>
+				</uxap:snappedHeading>
+			</uxap:ObjectPageDynamicHeaderTitle>
+		</uxap:headerTitle>
+		<uxap:headerContent>
+			<FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch">
+				<layout:VerticalLayout class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+					<Title text="{i18n>Label.Status}"/>
+					<!--<ObjectNumber number="{ path : 'poHeader>/STATUS' , formatter : '.formatter.parseStatusText' }" unit=""-->
+					<ObjectNumber number="{poHeader>/STATUS_NAME}" unit=""
+						state="{path:'poHeader>/STATUS', formatter:'.formatter.parseStatus'}"/>
+				</layout:VerticalLayout>
+				<layout:VerticalLayout class="sapUiLargeMarginEnd sapUiSmallMarginBottom">
+					<Title text="{i18n>Label.TotalValue}"/>
+					<ObjectNumber number="{path:'poHeader>/RLWRT', formatter:'.formatter.parseValue'}"
+						unit="{poHeader>/WAERS}" state="Success"/>
+				</layout:VerticalLayout>
+				<!--<layout:VerticalLayout class="sapUiLargeMarginEnd sapUiSmallMarginBottom">-->
+				<!--	<Title text="{i18n>Label.Vendor}"/>-->
+				<!--	<ObjectNumber number="{poHeader>/LIFNR_NAME} ({poHeader>/LIFNR})"-->
+				<!--		unit="" state="None"/>-->
+				<!--</layout:VerticalLayout>-->
+			</FlexBox>
+		</uxap:headerContent>
+		<uxap:sections>
+		<uxap:ObjectPageSection title="{i18n>Label.GeneralData}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.GeneralData}">
+						<uxap:blocks>
+							<layout:Grid defaultSpan="XL12 L12 M12 S12">
+								<layout:content>
+									<form:Form>
+										<form:layout>
+											<form:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+												emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="3" columnsM="2" singleContainerFullSize="false"/>
+										</form:layout>
+										<form:formContainers>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.PoDocType}" required="true"/>
+														</form:label>
+														<form:fields>
+															<!--<Text text="{poHeader>/BSART_NAME} ({poHeader>/BSART})"/>-->
+															<Input id="idDocumentType" value="{poHeader>/BSART}" change="onChangeDocumentType" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHDocumentType"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/BSART/@maxLength', formatter:'.formatter.parseInt'}"/>
+															<Text text="{poHeader>/BSART_NAME}" class="sapUiTinyMarginTop"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.CompanyReference}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input value="{poHeader>/UNSEZ}" type="Text" textAlign="Left" showValueHelp="false"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/UNSEZ/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL6 L6 M6 S12"/>
+																</layoutData>
+															</Input>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="" required="false"/>
+														</form:label>
+														<form:fields>
+															<CheckBox text="{i18n>Label.Zva2Header}" selected="{poHeader>/ZVA2}" editable="true" select="handleChangeZva2Header"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="" required="false"/>
+														</form:label>
+														<form:fields>
+															<CheckBox text="{i18n>Label.NoPrintSign}" selected="{poHeader>/ZZMM_NO_ESIGN}" editable="true"/>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.CreateBy}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Text text="{poHeader>/ERNAM_NAME}"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.CreateDate}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Text
+																text="{path: 'poHeader>/BEDAT', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd.MM.yyyy', UTC: false, style: 'short' } }"/>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.BeginDate} / {i18n>Label.EndDate}" required="false"/>
+														</form:label>
+														<form:fields>
+															<DateRangeSelection dateValue="{poHeader>/KDATB}" secondDateValue="{poHeader>/KDATE}" textAlign="Center" width="auto" 
+																editable="true" placeholder="{i18n>Label.DateFormat} - {i18n>Label.DateFormat}" change="onChangeBeginEndDate"
+																displayFormat="dd.MM.yyyy" valueFormat="dd.MM.yyyy" displayFormatType="Gregorian" visible="true">
+																<layoutData>
+																	<layout:GridData span="XL8 L8 M8 S12"/>
+																</layoutData>
+															</DateRangeSelection>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.Vendor}" required="{= ${poHeader>/MEMORY} }"/>
+														</form:label>
+														<form:fields>
+															<Input id="idVendor" value="{poHeader>/LIFNR}" 
+																change="onChangeVendor" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHVendor"
+																editable="{= ${poHeader>/MEMORY} }"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/LIFNR/@maxLength', formatter:'.formatter.parseInt'}"
+																maxSuggestionWidth="30%"
+																showTableSuggestionValueHelp="false"
+																showSuggestion="true" 
+																suggest="handleSuggest"
+																suggestionRows="{f4Vendor>/}">
+																<suggestionColumns>
+																	<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true" width="100px">
+																		<Label text="{i18n>Label.Vendor}"/>
+																	</Column>
+																	<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+																		<Label text="{i18n>Label.VendorName}"/>
+																	</Column>
+																</suggestionColumns>
+																<suggestionRows>
+																	<ColumnListItem>
+																		<cells>
+																			<Label text="{f4Vendor>LIFNR}"/>
+																			<Label text="{f4Vendor>NAME1}"/>
+																		</cells>
+																	</ColumnListItem>
+																</suggestionRows>
+																<layoutData>
+																	<layout:GridData span="XL5 L5 M5 S12"/>
+																</layoutData>
+															</Input>
+															<Text text="{poHeader>/LIFNR_NAME}" class="sapUiTinyMarginTop">
+															<layoutData>
+																<layout:GridData span="XL7 L7 M7 S12"/>
+															</layoutData>
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.VendorBranch}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input value="{poHeader>/ZZMM_J_1TPBUPL}" change="onChangeVendorBranch" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHVendorBranch" editable="{= ${poHeader>/LIFNR} !== ''}"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/ZZMM_J_1TPBUPL/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL5 L5 M5 S12"/>
+																</layoutData>
+															</Input>
+															<Text text="{poHeader>/J_1TPBUPL_NAME}" class="sapUiTinyMarginTop">
+																<layoutData>
+																	<layout:GridData span="XL7 L7 M7 S12"/>
+																</layoutData>
+															</Text>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.Company}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idCompany" value="{poHeader>/BUKRS}" change="onChangeCompany" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHCompany"
+																editable="true"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/BUKRS/@maxLength', formatter:'.formatter.parseInt'}">
+															</Input>
+															<Text text="{poHeader>/BUKRS_NAME}" class="sapUiTinyMarginTop">
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.PurchasingOrg}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idPurchasingOrg" value="{poHeader>/EKORG}" change="onChangePurchasingOrg" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHPurchasingOrg"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/EKORG/@maxLength', formatter:'.formatter.parseInt'}">
+															</Input>
+															<Text text="{poHeader>/EKORG_NAME}" class="sapUiTinyMarginTop">
+															</Text>
+														</form:fields>
+													</form:FormElement>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.PurchasingGroup}" required="true"/>
+														</form:label>
+														<form:fields>
+															<Input id="idPurchasingGroup" value="{poHeader>/EKGRP}" change="onChangePurchasingGroup" type="Text" textAlign="Left"
+																showValueHelp="true" valueHelpRequest="onVHPurchasingGroup"
+																editable="true"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/EKGRP/@maxLength', formatter:'.formatter.parseInt'}">
+															</Input>
+															<Text text="{poHeader>/EKGRP_NAME}" class="sapUiTinyMarginTop">
+															</Text>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+										</form:formContainers>
+									</form:Form>
+								</layout:content>
+							</layout:Grid>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="{i18n>Label.AuthPerson}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.AuthPerson}">
+						<uxap:blocks>
+							<layout:Grid defaultSpan="XL12 L12 M12 S12">
+								<layout:content>
+									<form:Form>
+										<form:layout>
+											<form:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+												emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+										</form:layout>
+										<form:formContainers>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.AuthPerson}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input value="{= ${poHeader>/ZMMAPP_PERNR} !== '00000000' ? ${poHeader>/ZMMAPP_PERNR} : ''}" change="onChangeAuthPerson" type="Text" textAlign="Left" showValueHelp="true"
+																editable="{= ${poHeader>/PERNR_AUTH_FLAG} === '' &amp;&amp; ${poHeader>/PERNR_AUTH_FLAG} !== 'X'}"
+																valueHelpRequest="onVHAuthPerson" enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/ZMMAPP_PERNR/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL2 L2 M3 S12"/>
+																</layoutData>
+															</Input>
+															<Input value="{poHeader>/ZMMAPP_VORNA}" type="Text" textAlign="Left" showValueHelp="false"
+																editable="{= ${poHeader>/PERNR_AUTH_FLAG} === '1' &amp;&amp; ${poHeader>/PERNR_AUTH_FLAG} !== 'X'}"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/ZMMAPP_VORNA/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL2 L2 M3 S6"/>
+																</layoutData>
+															</Input>
+															<Input value="{poHeader>/ZMMAPP_NACH2}" type="Text" textAlign="Left" showValueHelp="false"
+																editable="{= ${poHeader>/PERNR_AUTH_FLAG} === '1' &amp;&amp; ${poHeader>/PERNR_AUTH_FLAG} !== 'X'}"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/ZMMAPP_NACH2/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL2 L2 M3 S6"/>
+																</layoutData>
+															</Input>
+															<Input value="{poHeader>/ZMMAPP_STEXT}" type="Text" textAlign="Left" showValueHelp="false"
+																editable="{= ${poHeader>/PERNR_AUTH_FLAG} !== 'X'}"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/ZMMAPP_STEXT/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL4 L4 M9 S12"/>
+																</layoutData>
+															</Input>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+											<form:FormContainer title="">
+												<form:formElements>
+													<form:FormElement>
+														<form:label>
+															<Label text="{i18n>Label.SubPerson}" required="false"/>
+														</form:label>
+														<form:fields>
+															<Input value="{= ${poHeader>/ZMMACTO_PERNR} !== '00000000' ? ${poHeader>/ZMMACTO_PERNR} : ''}" change="onChangeSubPerson" type="Text" textAlign="Left" showValueHelp="true"
+																editable="{= ${poHeader>/PERNR_AUTH_FLAG} === '' &amp;&amp; ${poHeader>/PERNR_AUTH_FLAG} !== 'X'}"
+																valueHelpRequest="onVHSubPerson" enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/ZMMACTO_PERNR/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL2 L2 M3 S12"/>
+																</layoutData>
+															</Input>
+															<Input value="{poHeader>/ZMMACTO_VORNA}" type="Text" textAlign="Left" showValueHelp="false"
+																editable="{= ${poHeader>/PERNR_AUTH_FLAG} === '1' &amp;&amp; ${poHeader>/PERNR_AUTH_FLAG} !== 'X'}"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/ZMMACTO_VORNA/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL2 L2 M3 S6"/>
+																</layoutData>
+															</Input>
+															<Input value="{poHeader>/ZMMACTO_NACH2}" type="Text" textAlign="Left" showValueHelp="false"
+																editable="{= ${poHeader>/PERNR_AUTH_FLAG} === '1' &amp;&amp; ${poHeader>/PERNR_AUTH_FLAG} !== 'X'}"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/ZMMACTO_NACH2/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL2 L2 M3 S6"/>
+																</layoutData>
+															</Input>
+															<Input value="{poHeader>/ZMMACTO_STEXT}" type="Text" textAlign="Left" showValueHelp="false"
+																editable="{= ${poHeader>/PERNR_AUTH_FLAG} !== 'X'}"
+																enabled="true" visible="true" width="auto" valueHelpOnly="false"
+																maxLength="{path:'/#PoHeader/ZMMACTO_STEXT/@maxLength', formatter:'.formatter.parseInt'}">
+																<layoutData>
+																	<layout:GridData span="XL4 L4 M9 S12"/>
+																</layoutData>
+															</Input>
+														</form:fields>
+													</form:FormElement>
+												</form:formElements>
+											</form:FormContainer>
+										</form:formContainers>
+									</form:Form>
+								</layout:content>
+							</layout:Grid>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="{i18n>Label.LongText}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.LongText}">
+						<uxap:blocks>
+							<IconTabBar headerMode="Inline" upperCase="false" expandable="false" expanded="true" backgroundDesign="Transparent"
+								items="{poHeaderText>/}" applyContentPadding="true" showOverflowSelectList="true" class="sapUiResponsiveContentPadding myWidth">
+								<items>
+									<IconTabFilter icon="sap-icon://notes" design="Horizontal"
+										iconColor="{= ${poHeaderText>DETAIL} !== '' ? 'Positive' : 'Neutral'}" 
+										text="{poHeaderText>TITLE}" tooltip="{poHeaderText>TITLE}"
+										key="{poHeaderText>TDID}">
+										<TextArea rows="5" cols="200" editable="true" value="{poHeaderText>DETAIL}" 
+											liveChange="onTextBoxLiveChange" change="handleChangeLongText" />
+									</IconTabFilter>
+								</items>
+							</IconTabBar>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="{i18n>Label.ItemList}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.ItemList}">
+						<uxap:blocks>
+							<Table width="100%" growing="false" mode="MultiSelect" itemPress="handlePoItemPress" items="{poItem>/}">
+								<headerToolbar>
+									<OverflowToolbar design="Transparent">
+										<content>
+											<ToolbarSpacer/>
+											<Button text="{i18n>Button.AddItem}" iconFirst="true" type="Accept" press="handleAddItem" visible="false">
+												<layoutData>
+													<OverflowToolbarLayoutData moveToOverflow="true"/>
+												</layoutData>
+											</Button>
+											<Button text="{i18n>Button.DeleteItem}" iconFirst="true" type="Reject" press="handleDeleteItem">
+												<layoutData>
+													<OverflowToolbarLayoutData moveToOverflow="true"/>
+												</layoutData>
+											</Button>
+											<Button text="{i18n>Button.UnDeleteItem}" iconFirst="true" type="Default" press="handleUnDeleteItem">
+												<layoutData>
+													<OverflowToolbarLayoutData moveToOverflow="true"/>
+												</layoutData>
+											</Button>
+										</content>
+									</OverflowToolbar>
+								</headerToolbar>
+								<columns>
+									<Column width="45px" hAlign="Center" vAlign="Middle" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+										<header>
+											<Text text="{i18n>Label.ItemList}"/>
+										</header>
+									</Column>
+									<Column width="auto" hAlign="Left" vAlign="Middle" demandPopin="false">
+										<header>
+											<VBox>
+												<Text text="{i18n>Label.Material} /"/>
+												<Text text="{i18n>Label.ShortText}"/>
+											</VBox>
+										</header>
+									</Column>
+									<Column width="120px" hAlign="Left" vAlign="Top" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+										<header>
+											<Text text="{i18n>Label.MaterialGroup}"/>
+										</header>
+									</Column>
+									<Column width="130px" hAlign="Left" vAlign="Top" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+										<header>
+											<Text text="{i18n>Label.Plant}"/>
+										</header>
+									</Column>
+									<Column width="110px" hAlign="Left" vAlign="Middle" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+										<header>
+											<Text text="{i18n>Label.RefDoc}"/>
+										</header>
+									</Column>
+									<Column width="180px" hAlign="Right" vAlign="Middle" popinDisplay="Inline" demandPopin="true" minScreenWidth="Desktop">
+										<header>
+											<Text text="{i18n>Label.Quantity}"/>
+										</header>
+									</Column>
+									<Column width="140px" hAlign="Right" vAlign="Middle" popinDisplay="Inline" demandPopin="true" minScreenWidth="Desktop">
+										<header>
+											<Text text="{i18n>Label.UnitPrice}"/>
+										</header>
+									</Column>
+									<Column width="140px" hAlign="Right" vAlign="Middle" popinDisplay="Inline" demandPopin="true" minScreenWidth="Desktop">
+										<header>
+											<Text text="{i18n>Label.TotalValue}"/>
+										</header>
+									</Column>
+								</columns>
+								<items>
+									<ColumnListItem type="Navigation" highlight="{path:'poItem>LOEKZ', formatter:'.formatter.formatRowHighlight'}">
+										<cells>
+											<Text text="{path:'poItem>EBELP', formatter:'.formatter.parseInt'}"/>
+											<ObjectIdentifier title="{poItem>MATNR}" text="{poItem>TXZ01}" titleActive="false" visible="true"/>
+											<ObjectIdentifier title="{poItem>MATKL}" text="{poItem>MATKL_NAME}" titleActive="false" visible="true"/>
+											<ObjectIdentifier title="{poItem>WERKS}" text="{poItem>WERKS_NAME}" titleActive="false" visible="true"/>
+											<!--<Text text="{poItem>BANFN} / {path:'poItem>BNFPO', formatter:'.formatter.parseInt'}" />-->
+											<Link text="{parts: ['poItem>BANFN','poItem>BNFPO','poItem>KONNR','poItem>KTPNR'] , formatter: '.formatter.parseRefDoc'}"
+												href="{parts: ['poItem>BANFN','poItem>BNFPO','poItem>KONNR','poItem>KTPNR'] , formatter: '.formatter.parseRefDocHref'}" 
+												target="_blank" enabled="{= ${poItem>BANFN} !== '' || ${poItem>KONNR} !== ''}"/>
+											<HBox>
+												<Input value="{ path: 'poItem>MENGE', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2} }" 
+													textAlign="Right" change="onChangeQty" editable="{= ${poItem>LOEKZ} === '' &amp;&amp; ${poItem>PSTYP} !== 'D' }" />
+												<Input value="{poItem>MEINS_NAME}" valueHelpOnly="false" textAlign="Center" change="onChangeUnit"
+													valueHelpRequest="onVHUnit" showValueHelp="true" editable="{= ${poItem>LOEKZ} === '' &amp;&amp; ${poItem>MATNR} === '' &amp;&amp; ${poItem>PSTYP} !== 'D' }" />
+											</HBox>
+											<HBox alignItems="Center">
+												<Input value="{ path: 'poItem>NETPR', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2} }" 
+													textAlign="Right" change="onChangeUnitPrice" editable="{= ${poItem>LOEKZ} === '' &amp;&amp; ${poItem>PSTYP} !== 'D' }" />
+												<Text text="{poItem>WAERS}" width="30px" class="sapUiTinyMarginBegin"/>
+											</HBox>
+											<HBox alignItems="Center">
+												<Input value="{ path: 'poItem>RLWRT', type: 'sap.ui.model.type.Float', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2} }" 
+													textAlign="Right" change="onChangeTotalValue" editable="false" />
+												<Text text="{poItem>WAERS}" width="30px" class="sapUiTinyMarginBegin"/>
+											</HBox>
+										</cells>
+									</ColumnListItem>
+								</items>
+							</Table>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="{i18n>Label.ProcessFlow}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.ProcessFlow}">
+						<uxap:blocks>
+							<core:Fragment fragmentName="com.cu.s4hana.zlpuba002.view.fragment.PoProcessFlow" type="XML"/>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="{i18n>Label.Attachment}">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="{i18n>Label.Attachment}">
+						<uxap:blocks>
+							<UploadCollection 
+								uploadEnabled="true" 
+								uploadButtonInvisible="false" 
+								noDataText="{i18n>Label.NoAttachment}" 
+								maximumFileSize="{mFileSize>/limit}"
+								instantUpload="false" 
+								mimeType="" 
+								multiple="false" 
+								uploadUrl="" 
+								mode="None" 
+								items="{attachmentModel>/}" 
+								beforeUploadStarts="handleFileBeforeUpload"
+								change="handleFileChange" 
+								uploadComplete="handleFileUploadComplete"
+								uploadTerminated="handleFileUploadTerminate"
+								fileSizeExceed="handleFileSizeExceed">
+								<headerParameters/>
+								<items>
+									<UploadCollectionItem 
+										fileName="{attachmentModel>FILE_NAME}" 
+										mimeType="{attachmentModel>MIMETYPE}" 
+										enableDelete="true" 
+										visibleDelete="true"
+										press="handleFilePress"
+										deletePress="handleFileDelete">
+										<attributes>
+											<ObjectAttribute title="" 
+												text="{parts: ['attachmentModel>CREATE_DATE','attachmentModel>CREATE_TIME'] , formatter: '.formatter.parseUploadDateTime'}"/>
+											<ObjectAttribute title="" text="{attachmentModel>CREATE_BY}"/>
+											<ObjectAttribute title="" 
+												text="{ path : 'attachmentModel>FILE_SIZE' , formatter : '.formatter.formatFileSize' }"/>
+										</attributes>
+									</UploadCollectionItem>
+								</items>
+								<parameters/>
+								<toolbar/>
+							</UploadCollection>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+		</uxap:sections>
+		<uxap:footer>
+			<OverflowToolbar design="Auto" visible="true">
+				<content>
+					<Button id="messagePopoverBtn" icon="sap-icon://message-popup" type="Emphasized"
+						text="{=${message>/}.length}"
+						visible="{=!!${message>/}.length}" 
+						press="handleMessagePopoverPress"/>
+					<ToolbarSpacer/>
+					<Button text="{i18n>Button.DoCheckPo}" type="Emphasized" press="handleCheckPoPress"/>
+					<Button text="{i18n>Button.Save}" type="Emphasized" press="handleSavePress"/>
+					<Button text="{i18n>Button.HoldPr}" type="Ghost" visible="{= ${poHeader>/STATUS} === 'HOL'}"
+						press="handleHoldPress"/>
+					<Button text="{i18n>Button.CancelEdit}" type="Default" press="handleCancelEditPress"/>
+				</content>
+			</OverflowToolbar>
+		</uxap:footer>
+	</uxap:ObjectPageLayout>
+</core:FragmentDefinition>

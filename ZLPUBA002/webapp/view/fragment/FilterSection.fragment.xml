@@ -1,0 +1,146 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:variants="sap.ui.comp.variants" xmlns:form="sap.ui.layout.form"
+	xmlns:filterbar="sap.ui.comp.filterbar" xmlns:fb="sap.ui.comp.filterbar" xmlns:unified="sap.ui.unified"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<smartFilterBar:SmartFilterBar id="smartFilterBar" useToolbar="true" entitySet="PoHeaderSet" persistencyKey="zlpuba002.FilterBar"
+		considerGroupTitle="true">
+		<smartFilterBar:controlConfiguration>
+			<smartFilterBar:ControlConfiguration key="EBELN" index="1" label="{i18n>Label.PoNo}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="true" filterType="multiple">
+				<smartFilterBar:customControl>
+					<MultiInput id="idPoNo" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHPoNo" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/EBELN/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="BSART" index="2" label="{i18n>Label.PoDocType}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiInput id="idPoDocType" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHPoDocType" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/BSART/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="BANFN" index="3" label="{i18n>Label.PrNo}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="true" filterType="multiple">
+				<smartFilterBar:customControl>
+					<MultiInput id="idPrNo" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHPrNo" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/BANFN/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="KONNR" index="4" label="{i18n>Label.OaNo}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="true" filterType="multiple">
+				<smartFilterBar:customControl>
+					<MultiInput id="idOaNo" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHOaNo" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/KONNR/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="WERKS" index="5" label="{i18n>Label.Plant}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiInput id="idPlant" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHPlant" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/WERKS/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="MATNR" index="6" label="{i18n>Label.Material}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiInput id="idMaterial" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHMaterial" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/MATNR/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="TXZ01" index="7" label="{i18n>Label.ShortText}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiInput id="idShortText" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHPrItemShortText" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/TXZ01/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="MATKL" index="8" label="{i18n>Label.MaterialGroup}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiInput id="idMaterialGroup" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHMaterialGroup" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/MATKL/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="EKGRP" index="9" label="{i18n>Label.PurchasingGroup}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiInput id="idPurchasingGroup" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHPurchasingGroup" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/EKGRP/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="LIFNR" index="10" label="{i18n>Label.Vendor}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiInput id="idVendor" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHVendor" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/LIFNR/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="FISTL" index="11" label="{i18n>Label.FundCenter}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiInput id="idFundCenter" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHFundCenter" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/FISTL/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="GEBER" index="12" label="{i18n>Label.Fund}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiInput id="idFund" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHFund" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/GEBER/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="KNTTP" index="13" label="{i18n>Label.AccountAssignment}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiComboBox id="idAccountAssignment">
+						<items>
+							<core:Item key="-" text="{i18n>Label.AccountAssignment.None2}"/>
+							<core:Item key="A" text="{i18n>Label.AccountAssignment.Asset2}"/>
+							<core:Item key="K" text="{i18n>Label.AccountAssignment.CostCenter2}"/>
+							<core:Item key="U" text="{i18n>Label.AccountAssignment.Unknown2}"/>
+						</items>
+					</MultiComboBox>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="ERNAM" index="14" label="{i18n>Label.CreateBy}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiInput id="idCreateBy" showValueHelp="true" visible="true" width="auto" valueHelpRequest="onVHCreateBy" valueHelpOnly="false"
+						enableMultiLineMode="true" maxLength="{ path : '/#PoHeader/ERNAM/@maxLength' , formatter : '.formatter.parseInt' }"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="STATUS" index="15" label="{i18n>Label.Status}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<MultiComboBox id="idStatus">
+						<items>
+							<core:Item key="INP" text="{i18n>Label.Status.Inprocess}"/>
+							<core:Item key="APP" text="{i18n>Label.Status.Approved}"/>
+							<core:Item key="HOL" text="{i18n>Label.Status.Hold}"/>
+							<core:Item key="DEL" text="{i18n>Label.Status.Deleted}"/>
+						</items>
+					</MultiComboBox>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="DATEPERIOD" index="16" label="{i18n>Label.DatePeriod}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<Select id="idDatePeriod" change="onChangeDatePeriod">
+						<items>
+							<core:Item key="-" text="{i18n>Label.SelectCreateDatePeriod}"/>
+							<core:Item key="1M" text="{i18n>Label.DatePeriodPrev1m}"/>
+							<core:Item key="2M" text="{i18n>Label.DatePeriodPrev2m}"/>
+							<core:Item key="3M" text="{i18n>Label.DatePeriodPrev3m}"/>
+						</items>
+					</Select>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+			<smartFilterBar:ControlConfiguration key="BEDAT" index="17" label="{i18n>Label.CreateDate}" groupId="_BASIC" width="auto"
+				visibleInAdvancedArea="true" preventInitialDataFetchInValueHelpDialog="false">
+				<smartFilterBar:customControl>
+					<DateRangeSelection width="auto" id="idCreateDate" displayFormatType="Gregorian" placeholder="{i18n>Label.DateFormat}" 
+					valueFormat="dd.MM.yyyy" displayFormat="dd.MM.yyyy" change="checkDateFormatPeriod"/>
+				</smartFilterBar:customControl>
+			</smartFilterBar:ControlConfiguration>
+		</smartFilterBar:controlConfiguration>
+	</smartFilterBar:SmartFilterBar>
+</core:FragmentDefinition>
