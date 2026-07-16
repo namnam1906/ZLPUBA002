@@ -1,0 +1,45 @@
+FUNCTION zlpu_c002_po.
+*"----------------------------------------------------------------------
+*"*"Local interface:
+*"  IMPORTING
+*"     VALUE(IS_PO_HEADER) TYPE  ZSPUBA014 OPTIONAL
+*"     VALUE(IT_PO_HEADER_TEXT) TYPE  ZTPUBA015 OPTIONAL
+*"     VALUE(IT_PO_ITEM) TYPE  ZTPUBA016 OPTIONAL
+*"     VALUE(IT_PO_ITEM_TEXT) TYPE  ZTPUBA017 OPTIONAL
+*"     VALUE(IT_PO_ACC_ASSIGN) TYPE  ZTPUBA018 OPTIONAL
+*"  EXPORTING
+*"     VALUE(RETURN) TYPE  BAPIRET2_T
+*"     VALUE(EX_EBELN) TYPE  EKKO-EBELN
+*"----------------------------------------------------------------------
+
+  IF is_po_header-bedat IS INITIAL.
+    is_po_header-bedat = sy-datum.
+  ENDIF.
+
+  IF is_po_header-ebeln IS INITIAL.
+    "Create Mode
+    zcl_zlpuba002_po=>create_po(
+      EXPORTING
+        is_po_header      = is_po_header
+        it_po_header_text = it_po_header_text
+        it_po_item        = it_po_item
+        it_po_item_text   = it_po_item_text
+        it_po_acc_assign  = it_po_acc_assign
+      IMPORTING
+        et_return         = return
+        ex_ebeln          = ex_ebeln ).
+  ELSE.
+
+    "Change mode
+    zcl_zlpuba002_po=>change_po(
+      EXPORTING
+        is_po_header      = is_po_header
+        it_po_header_text = it_po_header_text
+        it_po_item        = it_po_item
+        it_po_item_text   = it_po_item_text
+        it_po_acc_assign  = it_po_acc_assign
+      IMPORTING
+        et_return         = return ).
+  ENDIF.
+
+ENDFUNCTION.

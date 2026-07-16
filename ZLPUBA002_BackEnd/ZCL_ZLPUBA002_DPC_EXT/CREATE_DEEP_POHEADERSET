@@ -1,0 +1,146 @@
+  method CREATE_DEEP_POHEADERSET.
+    DATA: ls_deep_entity        TYPE zcl_zlpuba002_mpc_ext=>ts_po_header_deep,
+          lv_rfc_name           TYPE tfdir-funcname,
+          lv_subrc              TYPE syst-subrc,
+          lv_exc_msg            TYPE /iwbep/mgw_bop_rfc_excep_text,
+          lv_destination        TYPE rfcdest,
+
+          lo_message            TYPE REF TO /iwbep/if_message_container,
+          lo_dp_facade          TYPE REF TO /iwbep/if_mgw_dp_int_facade,
+          lo_destination_finder TYPE REF TO /iwbep/if_destin_finder,
+
+          lx_root               TYPE REF TO cx_root,
+          lx_bus_ex             TYPE REF TO /iwbep/cx_mgw_busi_exception.
+
+    DATA: ls_po_header      TYPE zcl_zlpuba002_mpc_ext=>ts_poheader,
+          lt_po_header_text TYPE zcl_zlpuba002_mpc_ext=>tt_poheadertext,
+          lt_po_item_deep   TYPE zcl_zlpuba002_mpc_ext=>tt_po_item_deep,
+          ls_po_item        TYPE zcl_zlpuba002_mpc_ext=>ts_poitem,
+          lt_po_item        TYPE zcl_zlpuba002_mpc_ext=>tt_poitem,
+          lt_po_item_text   TYPE zcl_zlpuba002_mpc_ext=>tt_poitemtext,
+          lt_po_account     TYPE zcl_zlpuba002_mpc_ext=>tt_poaccassignment,
+          lt_return         TYPE bapiret2_t,
+          lv_ebeln          TYPE ekko-ebeln.
+
+*-------------------------------------------------------------
+*   Get RFC destination
+*-------------------------------------------------------------
+    lo_dp_facade          ?= /iwbep/if_mgw_conv_srv_runtime~get_dp_facade( ).
+    lo_destination_finder = lo_dp_facade->get_destination_finder( ).
+    lv_destination        = lo_destination_finder->get_rfc_destination_via_rout( ).
+
+*-------------------------------------------------------------
+*   Retrieve Data from HTTP Request
+*-------------------------------------------------------------
+    io_data_provider->read_entry_data(
+      IMPORTING
+        es_data = ls_deep_entity ).
+
+*-------------------------------------------------------------
+*   Mapping Data to RFC parameters
+*-------------------------------------------------------------
+*   Mapping Header Structure
+    MOVE-CORRESPONDING ls_deep_entity TO ls_po_header.
+
+*   Mapping Item Structure
+    lt_po_header_text = ls_deep_entity-poheadertext.
+
+    lt_po_item_deep = ls_deep_entity-poitem.
+    LOOP AT lt_po_item_deep INTO DATA(ls_po_item_deep).
+      MOVE-CORRESPONDING ls_po_item_deep TO ls_po_item.
+      APPEND ls_po_item TO lt_po_item.
+
+      LOOP AT ls_po_item_deep-poitemtext INTO DATA(ls_poitemtext).
+        APPEND ls_poitemtext TO lt_po_item_text.
+      ENDLOOP.
+
+      LOOP AT ls_po_item_deep-poaccassignment INTO DATA(ls_poaccassignment).
+        APPEND ls_poaccassignment TO lt_po_account.
+      ENDLOOP.
+    ENDLOOP.
+
+*-------------------------------------------------------------
+*   Call RFC function module
+*-------------------------------------------------------------
+    lv_rfc_name = 'ZLPU_C002_PO'.
+
+    IF lv_destination IS INITIAL OR lv_destination EQ 'NONE'.
+      TRY.
+          CALL FUNCTION lv_rfc_name
+            EXPORTING
+              is_po_header      = ls_po_header
+              it_po_header_text = lt_po_header_text
+              it_po_item        = lt_po_item
+              it_po_item_text   = lt_po_item_text
+              it_po_acc_assign  = lt_po_account
+            IMPORTING
+              return            = lt_return
+              ex_ebeln          = lv_ebeln
+            EXCEPTIONS
+              system_failure    = 1000 message lv_exc_msg
+              OTHERS            = 1002.
+
+          lv_subrc = sy-subrc.
+*       in case of co-deployment the exception is raised and needs to be caught
+        CATCH cx_root INTO lx_root.
+          lv_subrc = 1001.
+          lv_exc_msg = lx_root->if_message~get_text( ).
+      ENDTRY.
+    ELSE.
+      CALL FUNCTION lv_rfc_name DESTINATION lv_destination
+        EXPORTING
+          is_po_header          = ls_po_header
+          it_po_header_text     = lt_po_header_text
+          it_po_item            = lt_po_item
+          it_po_item_text       = lt_po_item_text
+          it_po_acc_assign      = lt_po_account
+        IMPORTING
+          return                = lt_return
+          ex_ebeln              = lv_ebeln
+        EXCEPTIONS
+          system_failure        = 1000 MESSAGE lv_exc_msg
+          communication_failure = 1001 MESSAGE lv_exc_msg
+          OTHERS                = 1002.
+
+      lv_subrc = sy-subrc.
+    ENDIF.
+
+*-------------------------------------------------------------
+*   Return Data
+*-------------------------------------------------------------
+*  IF lt_return IS NOT INITIAL.
+*    me->/iwbep/if_sb_dpc_comm_services~rfc_save_log(
+*      EXPORTING
+*        iv_entity_type = iv_entity_name
+*        it_return      = lt_return
+*        it_key_tab     = it_key_tab ).
+*  ENDIF.
+
+*-------------------------------------------------------------
+* Error and exception handling
+*-------------------------------------------------------------
+    READ TABLE lt_return TRANSPORTING NO FIELDS
+      WITH KEY type = 'E'.
+    IF sy-subrc = 0.
+      lo_message = mo_context->get_message_container( ).
+      lo_message->add_messages_from_bapi( it_bapi_messages = lt_return ).
+
+      CREATE OBJECT lx_bus_ex
+        EXPORTING
+          message_container = lo_message.
+
+      RAISE EXCEPTION lx_bus_ex.
+    ENDIF.
+
+*-------------------------------------------------------------------------*
+* Send response to the caller interface
+*-------------------------------------------------------------------------*
+    ls_deep_entity-ebeln = lv_ebeln.
+
+    copy_data_to_ref(
+      EXPORTING
+        is_data = ls_deep_entity
+      CHANGING
+        cr_data = er_deep_entity
+    ).
+  endmethod.
